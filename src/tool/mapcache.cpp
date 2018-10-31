@@ -123,8 +123,8 @@ void cache_map(char *name, struct map_data *m)
 	if (strlen(name) > MAP_NAME_LENGTH) // It does not hurt to warn that there are maps with name longer than allowed.
 		ShowWarning ("Map name '%s' size '%" PRIuPTR "' is too long. Truncating to '%d'.\n", name, strlen(name), MAP_NAME_LENGTH);
 	strncpy(info.name, name, MAP_NAME_LENGTH);
-	info.xs = MakeShortLE(m->xs);
 	info.ys = MakeShortLE(m->ys);
+	info.xs = MakeShortLE(m->xs);
 	info.len = MakeLongLE(len);
 
 	// Append map header then compressed cells at the end of the file
@@ -143,7 +143,7 @@ void cache_map(char *name, struct map_data *m)
 // Checks whether a map is already is the cache
 int find_map(char *name)
 {
-	int i;
+	int i=0;
 	struct map_info info;
 
 	fseek(map_cache_fp, sizeof(struct main_header), SEEK_SET);
@@ -176,7 +176,8 @@ char *remove_extension(char *mapname)
 // Processes command-line arguments
 void process_args(int argc, char *argv[])
 {
-	for(int i = 0; i < argc; i++) {
+	int i=0;
+	for(; i < argc; i++) {
 		if(strcmp(argv[i], "-grf") == 0) {
 			if(++i < argc)
 				grf_list_file = argv[i];
